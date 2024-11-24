@@ -66,3 +66,8 @@ que simplemente devolverá un 200 OK, donde tendremos un servicio (que no debes 
 1. Crear proyecto de Unit Testing donde pruebes las funciones CRUD.
 2. Conseguir inyección de dependencias de validadores de forma genérica. (Parecido a la inyección de AppServices del Module de BL)
 3. Coméntanos si has encontrado código mejorable en la prueba. (No cumple naming convention, se incumple algún principio SOLID, hay algo mal estructurado, etc.)
+
+
+ICrudAppService<TDto>		Segregación de interfaces.- Obliga a hacer mucho
+ClientAppService			Principio de responsabilidad unica.- Hace muchas cosas
+

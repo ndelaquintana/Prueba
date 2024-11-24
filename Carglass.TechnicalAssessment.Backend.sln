@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carglass.TechnicalAssessment.Backend.BLTest", "Carglass.TechnicalAssessment.Backend.BLTest\Carglass.TechnicalAssessment.Backend.BLTest.csproj", "{BF12D29F-25E7-4C50-96C4-6AE6FC8E86ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{6744C5CB-3732-4241-9014-3AE131AE544D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6744C5CB-3732-4241-9014-3AE131AE544D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6744C5CB-3732-4241-9014-3AE131AE544D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF12D29F-25E7-4C50-96C4-6AE6FC8E86ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF12D29F-25E7-4C50-96C4-6AE6FC8E86ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF12D29F-25E7-4C50-96C4-6AE6FC8E86ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF12D29F-25E7-4C50-96C4-6AE6FC8E86ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

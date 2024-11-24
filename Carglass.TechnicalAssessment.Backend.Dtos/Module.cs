@@ -13,6 +13,9 @@ public class Module : Autofac.Module
 
     private static void RegisterValidators(ContainerBuilder builder)
     {
-        builder.RegisterType<ClientDtoValidator>().As<IValidator<ClientDto>>();
+        builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+            .Where(x => !x.IsAbstract && !x.IsInterface && x.Name.EndsWith("DtoValidator"))
+            .AsImplementedInterfaces()
+            .InstancePerDependency();
     }
 }

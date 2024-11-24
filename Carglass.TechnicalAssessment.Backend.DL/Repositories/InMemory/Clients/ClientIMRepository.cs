@@ -26,9 +26,12 @@ public class ClientIMRepository : ICrudRepository<Client>
             );
     }
 
-    public IEnumerable<Client> GetAll()
+    public IEnumerable<Client> GetAll(Func<Client,bool>? predicate = null)
     {
         // TODO CodeReview
+        if (predicate != null) 
+            return _clients.Where(x => predicate(x));
+
         return _clients;
     }
 
@@ -41,7 +44,7 @@ public class ClientIMRepository : ICrudRepository<Client>
     {
         // TODO CodeReview
         if (_clientIds.Contains(item.Id))
-            throw new InvalidDataException();
+            throw new Exception();
 
         _clients.Add(item);
         _clientIds.Add(item.Id);
@@ -50,10 +53,12 @@ public class ClientIMRepository : ICrudRepository<Client>
     public void Update(Client item)
     {
         // TODO CodeReview
-        if (!_clientIds.Contains(item.Id))
-            throw new InvalidDataException();
-        Delete(item);
-        Create(item);
+        if (_clientIds.Contains(item.Id))
+        {
+            var toUpdateItem = _clients.Single(x => x.Id.Equals(item.Id));
+            Delete(toUpdateItem);
+            Create(item);
+        }
     }
 
     public void Delete(Client item)

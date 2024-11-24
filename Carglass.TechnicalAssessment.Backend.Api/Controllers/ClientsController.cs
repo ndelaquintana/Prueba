@@ -1,6 +1,5 @@
 using Carglass.TechnicalAssessment.Backend.BL;
 using Carglass.TechnicalAssessment.Backend.Dtos;
-using Carglass.TechnicalAssessment.Backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carglass.TechnicalAssessment.Backend.Api.Controllers;
@@ -13,16 +12,9 @@ public class ClientsController : ControllerBase
 
     public ClientsController(IClientAppService clientAppService)
     {
-        this._clientAppService = clientAppService;
+        _clientAppService = clientAppService;
     }
 
-    //[HttpGet]
-    //public IActionResult GetAll()
-    //{
-    //    // TODO CodeReview
-    //    return new OkObjectResult(_clientAppService.GetAll());
-    //}
-    
     [HttpGet]
     public IEnumerable<ClientDto> GetAll()
     {
@@ -39,7 +31,6 @@ public class ClientsController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] ClientDto dto)
     {
-        // TODO CodeReview
         _clientAppService.Create(dto);
         return Ok();
     }
@@ -54,7 +45,6 @@ public class ClientsController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] ClientDto dto)
     {
-        // TODO CodeReview
         _clientAppService.Delete(dto);
         return Ok();
     }

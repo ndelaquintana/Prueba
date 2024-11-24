@@ -6,75 +6,99 @@ using FluentValidation;
 
 namespace Carglass.TechnicalAssessment.Backend.BL;
 
-internal class ClientAppService : IClientAppService
+public class ClientAppService : IClientAppService
 {
-    private readonly ICrudRepository<Client> _theData;
-    private readonly IMapper _magicalClassChanger;
-    private readonly IValidator<ClientDto> _allIsCorrectHere;
-
-    // TODO CodeReview
+    private readonly ICrudRepository<Client> _repository;
+    private readonly IValidator<ClientDto> _dtoValidator;
+    private readonly IMapper _mapper;
     public ClientAppService(
-        ICrudRepository<Client> theData, 
-        IMapper magicalClassChanger, 
-        IValidator<ClientDto> allIsCorrectHere)
+        ICrudRepository<Client> repository, 
+        IValidator<ClientDto> dtoValidator,
+        IMapper mapper)
     {
-        _theData = theData;
-        _magicalClassChanger = magicalClassChanger;
-        _allIsCorrectHere = allIsCorrectHere;
+        _repository = repository;
+        _dtoValidator = dtoValidator;
+        _mapper = mapper;
     }
 
     public IEnumerable<ClientDto> GetAll()
     {
-        var moneySpenders = _theData.GetAll();
-        return _magicalClassChanger.Map<IEnumerable<ClientDto>>(moneySpenders);
+        var entities = _repository.GetAll();
+        return _mapper.Map<IEnumerable<ClientDto>>(entities);
     }
 
     public ClientDto GetById(params object[] keyValues)
     {
-        var theOne = _theData.GetById(keyValues);
-        return _magicalClassChanger.Map<ClientDto>(theOne);
+        var entity = _repository.GetById(keyValues);
+        return _mapper.Map<ClientDto>(entity);
     }
 
-    public void Create(ClientDto newMoney)
+    public void Create(ClientDto dto)
     {
-        if (null != _theData.GetById(newMoney.Id))
-        {
-            throw new Exception("Ya existe un cliente con este Id");
-        }
-
-        // TODO CodeReview
-        ValidateDto(newMoney);
-
-        var entity = _magicalClassChanger.Map<Client>(newMoney);
-        _theData.Create(entity);
+        ValidateDto(dto);
+        ValidateInsertDto(dto);
+        var entity = _mapper.Map<Client>(dto);
+        _repository.Create(entity);
     }
 
-    public void Update(ClientDto aBitOfMakeup)
+    public void Update(ClientDto dto)
     {
-        if (null == _theData.GetById(aBitOfMakeup.Id))
-        {
-            throw new Exception("No existe ningún cliente con este Id");
-        }
-
-        ValidateDto(aBitOfMakeup);
-
-        var entity = _magicalClassChanger.Map<Client>(aBitOfMakeup);
-        _theData.Update(entity);
+        ValidateDto(dto);
+        ValidateUpdateDto(dto);
+        var entity = _mapper.Map<Client>(dto);
+        _repository.Update(entity);
     }
 
-    public void Delete(ClientDto byebyee)
+    public void Delete(ClientDto dto)
     {
-        // TODO CodeReview
-        _theData.Delete(_magicalClassChanger.Map<Client>(byebyee));
+        ValidateDeleteDto(dto);
+        var entity = _mapper.Map<Client>(dto);
+        _repository.Delete(entity);
     }
 
-    private void ValidateDto(ClientDto item)
+    private void ValidateDto(ClientDto dto)
     {
-        var validationResult = _allIsCorrectHere.Validate(item);
+        var validationResult = _dtoValidator.Validate(dto);
         if (validationResult.Errors.Any())
         {
             string toShowErrors = string.Join("; ", validationResult.Errors.Select(s => s.ErrorMessage));
             throw new Exception($"El cliente especificado no cumple los requisitos de validación. Errores: '{toShowErrors}'");
+        }
+    }
+
+    private void ValidateInsertDto(ClientDto dto)
+    {
+        if (null != _repository.GetById(dto.Id))
+        {
+            throw new Exception("Ya existe un cliente con este Id");
+        }
+        if (_repository.GetAll(z=>z.DocNum == dto.DocNum).Any())
+        {
+            throw new Exception($"Ya existe un cliente con docNum {dto.DocNum}");
+        }
+    }
+
+    private void ValidateUpdateDto(ClientDto dto)
+    {
+        if (null == _repository.GetById(dto.Id))
+        {
+            throw new Exception("No existe ningún cliente con este Id");
+        }
+
+        if (_repository.GetAll(
+            z => z.DocNum == dto.DocNum && 
+            z.Id != dto.Id
+            ).Any())
+        {
+            throw new Exception($"Ya existe un cliente con docNum {dto.DocNum}");
+        }
+    }
+
+    private void ValidateDeleteDto(ClientDto dto)
+    {
+        if (null == _repository.GetById(dto.Id))
+        {
+            throw new Exception("No existe ningún cliente con este Id");
         }
     }
 }
