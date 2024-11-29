@@ -12,7 +12,6 @@ public class Module : Autofac.Module
 
     private static void RegisterRepositories(ContainerBuilder builder)
     {
-        // TODO CodeReview
         builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
             .Where(x => !x.IsAbstract && !x.IsInterface && x.Name.EndsWith("IMRepository"))
             .AsImplementedInterfaces()

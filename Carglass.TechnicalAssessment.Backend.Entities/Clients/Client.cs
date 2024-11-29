@@ -1,7 +1,8 @@
 ﻿namespace Carglass.TechnicalAssessment.Backend.Entities;
 
-public class Client
+public class Client:IEntity
 {
+    public Key Key => new Key(Id);
     public int Id { get; set; }
     public string DocType { get; set; }
     public string DocNum { get; set; }

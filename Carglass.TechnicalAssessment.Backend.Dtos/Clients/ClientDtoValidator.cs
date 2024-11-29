@@ -1,6 +1,4 @@
-﻿using Autofac.Features.Metadata;
-using FluentValidation;
-using System.Text.RegularExpressions;
+﻿using FluentValidation;
 
 namespace Carglass.TechnicalAssessment.Backend.Dtos;
 
